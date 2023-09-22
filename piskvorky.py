@@ -8,8 +8,10 @@ a = 5
 s_p = 500 / a 
 canvas = tkinter.Canvas(width=500, height=500)
 canvas.pack()
- 
 
+# Ukladanie súradníc pravého a lavého do listu 
+r_sur = []
+l_sur = []
 
 # Pole
 for v in range(1, a + 1):
@@ -24,8 +26,13 @@ def klik_l(a):
     print("X-L", x)
     print("Y-L", y)
     print("#######")   
+    
+    #Súradnica x celočíselné delenie krát šírka pola pre x1, Súradnica y celočíselné delenie krát šírka pola delenie pre y1 
+    #Súradnica x celočíselné delenie krát šírka pola plus šírka pola pre x2, Súradnica y celočíselné delenie krát šírka pola plus šírka pola pre y2
+    
     canvas.create_oval(x // s_p * s_p, y // s_p * s_p,  x // s_p * s_p + s_p, y // s_p * s_p + s_p, fill="red")
 
+# Action button
 def klik_r(b):
     x = b.x
     y = b.y
