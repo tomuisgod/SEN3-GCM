@@ -1,40 +1,52 @@
 import tkinter
 import random
 
-canvas = tkinter.Canvas(width=1000, height=1000)
+canvas = tkinter.Canvas(height=500, width=500)
 canvas.pack()
 
-def hracie_pole():
-    #Hracie pole
-    canvas.create_line(400, 200, 400, 800, width=5)
-    canvas.create_line(600, 200, 600, 800, width=5)
-    canvas.create_line(200, 400, 800, 400, width=5)
-    canvas.create_line(800, 600, 200, 600, width=5)
 
-    #Text
-    canvas.create_text(500, 50, text=a, font=('Helvetica 40 bold'))
+x = 5
+w = 500//x
+pole = []
+pole.append([-1]*(x+2))
+for i in range(x):
+    pole.append([-1]+[0]*x)
+pole.append([-1]*(x+2))
 
-def vyber_hraca():
-    v = input("Pre vybratie kruhu stlac [A], pre vybratie kriziku stlac [B]")
-    if len(v) < 1:
-        print("Nevybral si si žiadnu možnosť, skús to prosím znova")
-        v = input("Pre vybratie kruhu stlac [A], pre vybratie kriziku stlac [B]")
+print(pole)
+for i in range(1,x+1):
+    canvas.create_line(0, 500/x*i, 500, 500/x*i)
+    canvas.create_line(500/x*i, 0, 500/x*i, 500)
 
-    if v != "A" or "B":
-        print("Zvolená možnosť neexistuje, možnosti sú [A] pre kruh a [B] pre krizik")
-        v = input("Pre vybratie kruhu stlac [A], pre vybratie kriziku stlac [B]")
+pocet_min = 0
+while pocet_min <= 10:
+    rand_x = random.randrange(len(pole))+1
+    rand_y = random.randrange(len(pole))+1
 
-    else:
-        hracie_pole()
-        if v == "A" or "a":
-            kruh = 1
-            krizik = 0
-        if v == "B" or "b":
-            kruh = 0
-            krizik = 1
+    if pole[rand_x][rand_y] != 9:
+        pole[rand_x][rand_y] = 9
+        pocet_min += 1
+
+for i in range(1, len(pole)-1):
+    for j in range(1, len(pole)-1):
+        if pole[i][j] != 9:
+            okolite_miny = 0
+            for k in range(-1, 2):  
+                for l in range(-1,2):
+                    if pole[i+k][j+l] == 9:
+                        okolite_miny += 1
+            pole[i][j] = okolite_miny
+
+def klik(a):
+    print("-------")
+    print("x",a.x)
+    print("y",a.y)
+    print("-------")
+    print("\n")
+    canvas.create_oval(a.x//w*w, a.y//w*w, a.x//w*w+w, a.y//w*w+w)
+    pole[a.y//w][a.x//w]=1
+
+canvas.bind("<Button-1>",klik)
 
 
-vyber_hraca
-
-
-tkinter.mainloop()
+canvas.mainloop()
